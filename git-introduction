@@ -35,3 +35,18 @@ git switch -c <new_branch>	Creates a new branch and switches to it in one step. 
 git switch main	Switches back to the main branch.
 git branch -d <new_branch>	Deletes the branch. The -d flag only allows deletion if the branch has been fully merged (safe). Use -D to force-delete unmerged branches.
 Key difference from before: the older syntax used git checkout <branch> for switching and git checkout -b <branch> for creating + switching. The newer git switch and git branch commands do the same thing but are more explicit and less error-prone.
+
+Command	What it does
+git switch main	Switches back to the main branch.
+git merge dev	Merges the dev branch into main — takes all the commits made on dev and combines them into main.
+git push	Uploads your local main (with the new merged changes) to the remote (GitHub). No flags needed because you already set up tracking with -u earlier.
+git pull	Downloads any new commits from the remote and merges them into your local branch. Useful when a teammate has pushed changes you don't have yet.
+
+The flow in plain English:
+
+You finish work on dev
+Switch to main
+Pull in all that dev work
+Push the updated main to GitHub
+(Later) Pull again to get whatever others pushed while you were away
+git pull = git fetch + git merge in one step. It grabs new remote commits and merges them locally.
