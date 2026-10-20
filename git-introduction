@@ -1,0 +1,37 @@
+What is Git?
+Git is a distributed version control system — a tool that tracks every change you make to your files (usually code) over time.  It was created by Linus Torvalds in 2005 to manage the Linux kernel. 
+
+Think of it like a save system for your project.  Every time you git commit, Git takes a snapshot of your project.  You can go back to any snapshot at any time.
+
+Why use it?
+Problem without Git	How Git solves it
+You break your code and can't go back	Revert to any previous commit
+You lose files (hard drive crash, accident)	Recover from any copy — every developer has the full history
+Two people edit the same file and overwrite each other	Branch & merge — work independently, combine safely
+You don't know who changed what and when	Every commit records who, what, and when
+You need to try a risky experiment	Create a branch, experiment freely, delete it if it fails
+
+"Distributed" — what does that mean?
+Unlike older systems (like SVN) where there's one central server with the full history, in Git every developer has a complete copy of the project and its entire history on their own machine.  This means:
+
+You can work offline
+No single point of failure (if one server dies, everyone else still has everything)
+It's fast — most operations happen locally 
+In one sentence
+Git is the industry-standard tool for tracking changes, collaborating with others, and recovering from mistakes — and it's what you were just learning commands for in the previous steps.
+
+Command	What it does
+git init	Creates a new Git repository in your current folder (makes a hidden .git directory that tracks all changes).
+git add .	Stages all files in the current directory so Git knows to include them in the next commit.
+git commit -m "..."	Saves a snapshot of the staged files with a message describing the change. This is your first commit.
+git branch -M main	Renames the current branch to main (the -M flag forces it even if the name already exists). Older Git versions default to master; this ensures you're using main.
+git remote add origin <url>	Connects your local repo to a remote repository (e.g., on GitHub) and gives it the nickname origin. You paste the URL from GitHub here.
+git remote -v	Verifies the remote was added correctly — shows the fetch and push URLs for origin.
+git push -u origin main	Pushes your local main branch to the remote for the first time.  The -u flag sets up tracking, so from now on you can just type git push / git pull without specifying the remote and branch.
+Command	What it does
+git branch <branch name>	Creates a new branch with the given name (but does not switch to it).
+git switch <new_branch_name>	Switches (checks out) to an existing branch. You're now working on that branch.
+git switch -c <new_branch>	Creates a new branch and switches to it in one step. The -c flag means "create".
+git switch main	Switches back to the main branch.
+git branch -d <new_branch>	Deletes the branch. The -d flag only allows deletion if the branch has been fully merged (safe). Use -D to force-delete unmerged branches.
+Key difference from before: the older syntax used git checkout <branch> for switching and git checkout -b <branch> for creating + switching. The newer git switch and git branch commands do the same thing but are more explicit and less error-prone.
