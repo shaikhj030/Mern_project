@@ -1,0 +1,73 @@
+Docker — Introduction
+Docker is an open-source platform that packages your application with all its dependencies (libraries, runtime, config) into a single portable unit called a container — so it runs identically on your laptop, your test server, and production. 
+
+It directly solves the problem you saw in environment management: "works on my machine." 
+
+Core Concepts
+Term	What it is	Analogy
+Dockerfile	A text file with instructions to build an image	Like a Git commit message + recipe
+Image	A read-only blueprint (code + deps + config)	Like a Git repo
+Container	A running instance of an image	Like a Git checkout
+Docker Hub	A registry to store/share images	Like GitHub for images
+Docker Engine	The daemon that builds and runs containers	The runtime
+
+Container vs Virtual Machine
+Docker Container	Virtual Machine
+Virtualizes	OS-level (shares host kernel)	Full hardware (each has its own OS)
+Size	~100 MBs	~GBs
+Boot time	Milliseconds	Minutes
+Isolation	Process-level (lighter)	Full OS-level (stronger)
+Use case	Microservices, CI/CD, cloud-native	Legacy apps, multi-tenant, compliance
+
+How It Connects to What You Already Know
+DevOps concept	Docker's role
+Environment parity	Same image in dev → staging → prod. No rebuild.
+CI/CD pipeline	Pipeline builds the image → pushes to registry → deploys the same artifact to each env
+IaC	Dockerfile is your "infrastructure as code" for the app layer
+Git	Dockerfile is version-controlled in Git; image tags mirror commit hashes
+
+Minimal Example
+# Dockerfile
+FROM node:18
+WORKDIR /app
+COPY . .
+RUN npm install
+CMD ["node", "server.js"]
+
+docker build -t myapp .        # build the image
+docker run -p 3000:3000 myapp  # run the container
+
+In One Sentence
+Docker lets you build once, run anywhere — the same container image that works on your laptop is the exact same one running in production, eliminating environment mismatch entirely.
+
+docker command 
+Command                                	                                                    What it does
+docker ps	                                                                     Lists currently running containers (ID, image, name, status, ports).
+docker images	                                                                 Lists all images stored locally on your machine (name, tag, size, creation date).
+docker ps -a	                                                                 Lists all containers — running and stopped. The -a flag means "all".
+docker stop <container id>	                                                   Stops a running container (sends a graceful shutdown signal).
+docker start <container id>                                                    Starts a previously stopped container (without recreating it).
+docker rm <container id>	                                                     Removes a stopped container from your system (frees the name/ID).
+docker rmi <image name>	                                                       Removes an image from your local machine.
+docker build -t mern-backend .                                                 Builds an image from the Dockerfile in the current directory (.) and tags it mern-backend.
+docker build -t front-backend .	                                               Same — builds and tags another image (likely your frontend).
+docker run -d -p 5000:5000 --name=backend mern-backend	                       Runs the mern-backend image as a container in detached mode (-d), maps port 5000 on your host to port 5000 in the container, and names it backend.
+docker run -d -p 5173:5173 --name=frontend mern-frontend	                     Same for the frontend — maps host port 5173 to container port 5173, names it frontend.
+docker compose up -d	                                                         Starts all services defined in your docker-compose.yml file in detached mode. This is the modern way to run a multi-container app (e.g., frontend + backend + database) in one command. 
+
+Quick Reference: Container Lifecycle
+build → run → ps (running) → stop → ps -a (stopped) → start (again) → rm (delete)   
+
+  docker run flags cheat sheet
+Flag	      Meaning
+-d        	Run in detached mode (background)
+-p          host:container	Port mapping — expose a container port to your host
+--name	    Give the container a readable name instead of a random ID
+
+docker compose vs individual docker run
+Approach	When to use
+docker run (one at a time)	Single container, quick testing
+docker compose up -d	Multi-service apps (frontend + backend + DB + cache) — defined in one docker-compose.yml
+
+docker compose is the preferred approach for real projects because it handles networking, shared volumes, and service dependencies automatically.
+  
